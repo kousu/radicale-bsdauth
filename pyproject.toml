@@ -1,0 +1,4 @@
+[build-system]
+requires = ["setuptools>=42","setuptools_scm[toml]"]
+
+[tool.setuptools_scm] # enable setuptools_scm
