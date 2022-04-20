@@ -1,4 +1,34 @@
+[project]
+# Keeping everything in pyproject.toml is still experimental
+# so this section is fragile and subject to change.
+# ref: https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
+# ref: https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+
+name = "radicale-bsdauth"
+authors = [ {name = "kousu", email = "kousu@kousu.ca"} ]
+description = "Login to Radicale with your native OpenBSD accounts."
+#readme = "README.md" # TODO
+
+requires-python = ">=3.8"
+dependencies = [
+  "radicale~=3.0",
+  ]
+
+keywords = ["authentication", "radicale", "caldav", "carddav", "PIM", "plugin"]
+
+dynamic = ["version"] # setuptools_scm takes care of this
+
+[project.license]
+text = "GPL version 3"
+
+[project.urls]
+Homepage = "https://github.com/kousu/radicale-bsdauth"
+Repository = "https://github.com/kousu/radicale-bsdauth"
+Documentation = "https://github.com/kousu/radicale-bsdauth/blob/trunk/README.md"
+
+
 [build-system]
-requires = ["setuptools>=42","setuptools_scm[toml]"]
+requires = ["setuptools>=61","setuptools_scm[toml]"]
+# setuptools 61 is the earliest to support keeping metadata in this file
 
 [tool.setuptools_scm] # enable setuptools_scm
