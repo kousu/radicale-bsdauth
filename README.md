@@ -26,11 +26,13 @@ cat <<EOF | doas tee /etc/rc.d/radicale && doas chmod +x /etc/rc.d/radicale
 
 daemon="/usr/local/bin/radicale"
 daemon_user="_radicale"
+daemon_logger="daemon.info"
 
 . /etc/rc.d/rc.subr
 
 rc_start() {
-        \${rcexec} "\${daemon} \${daemon_flags} &"
+        \${rcexec} "\${daemon_logger:+set -o pipefail; }\${daemon} \${daemon_flags}\${daemon_logger:+ 2>&1 |
+                logger -ip \${daemon_logger} -t \${_name}} \&"
 }
 
 # Beware: you need to update this for to the python you actually have installed
