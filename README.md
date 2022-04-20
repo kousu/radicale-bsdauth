@@ -11,6 +11,8 @@ same password you use for ssh and, perhaps, email, chat, etc.
 This has only been tested against `radicale>=3`, which is not yet packaged
 for OpenBSD, so you must install that version manually.
 
+<details><summary><code>"pkg_add" radicale>=3</code></summary>
+
 **If you are currently using version 2, you should backup your calendars before proceeding**
 because this implies doing a migration; but luckily, CalDAV is a pretty stable format and hopefully won't be hurt much by this:
 
@@ -41,6 +43,8 @@ pexp="/usr/local/bin/python3.8 /usr/local/bin/radicale"
 rc_cmd \$1
 EOF
 ```
+
+</details>
 
 
 Then install the plugin:
