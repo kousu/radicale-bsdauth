@@ -33,24 +33,33 @@ doas rcctl resetart radicale
 
 ## Publishing
 
-(this is mostly a note to self)
+To publish a new version, go to https://github.com/kousu/radicale-bsdauth/releases/new and fill in a new tag `vX.Y.Zrc0` and click Publish.
+It will automatically be built and published (via [.github/workflows/publish.yml](.github/workflows/publish.yml)) to https://github.com/kousu/radicale-bsdauth/releases and https://pypi.org/project/radicale-bsdauth/.
 
-To publish a new version, use
+You should make sure to tag it with the 'rc' (release candidate) part initially,
+to make sure not to disrupt any users. Before fully publishingly, you can test the built version with
+
+```
+pip install --upgrade --pre radicale-bsdauth
+```
+
+As you find and squash the final bugs, you can create a series of Releases tagged with 'rc1', 'rc2', etc
+and test each in turn.
+
+When you have a version that works, re-submit it (without making any more commits!) as `vX.Y.Z`; at that point,
+people running `pip install --upgrade radicale-bsdauth` will get the new version.
+
+
+You do not necessarily need to _create_ a tag through the Releases page: you can use `git tag` locally
+to manage your tags, and then `git push --tags` to upload them to Github, and then pick them out from the
+liist on the New Release page.
+
+
+### Debugging
+
+If you need to debug the release process, you can emulate it locally with
 
 ```
 git tag vX.Y.Zrc0
 python -m build
 ```
-
-The 'rc' part makes sure it won't accidentally be used before it's ready: you *cannot replace files on https://pypi.org* so be careful with your tagging.
-
-
-When you are happy with it, do a final real tag:
-
-```
-git tag vX.Y.Zrc0
-git push --tags
-```
-
-
-( TODO:  upload to pypi )
