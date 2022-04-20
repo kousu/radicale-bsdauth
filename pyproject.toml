@@ -4,8 +4,8 @@
 # ref: https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
 # ref: https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 
-name = "radicale_bsdauth"
-authors = [ {email = "kousu@kousu.ca"} ]
+name = "radicale-bsdauth"
+authors = [ {name = "kousu", email = "kousu@kousu.ca"} ]
 description = "Login to Radicale with your native OpenBSD accounts."
 readme = "README.md"
 
@@ -22,9 +22,9 @@ dynamic = ["version"] # setuptools_scm takes care of this
 text = "GPL version 3"
 
 [project.urls]
-homepage = "https://github.com/kousu/radicale_bsdauth"
-repository = "https://github.com/kousu/radicale_bsdauth"
-documentation = "https://github.com/kousu/radicale_bsdauth/blob/trunk/README.md"
+Homepage = "https://github.com/kousu/radicale-bsdauth"
+Repository = "https://github.com/kousu/radicale-bsdauth"
+Documentation = "https://github.com/kousu/radicale-bsdauth/blob/trunk/README.md"
 
 
 [build-system]

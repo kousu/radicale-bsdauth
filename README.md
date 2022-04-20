@@ -42,7 +42,7 @@ EOF
 Then install the plugin:
 
 ```
-doas pip install radicale_bsdauth
+doas pip install radicale-bsdauth
 ```
 
 In order to function, you also need to grant `radicale` access to authenticate(3):
