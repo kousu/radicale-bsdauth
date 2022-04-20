@@ -9,17 +9,44 @@ same password you use for ssh and, perhaps, email, chat, etc.
 ## Installation
 
 This has only been tested against `radicale>=3`, which is not yet packaged
-for OpenBSD, so you must install that version manually.
+for OpenBSD, so you must [install that version manually](#install-radicale-3-on-openbsd) (below) if it's not already.
 
-**If you are currently using version 2, you should backup your calendars before proceeding**
-because this implies doing a migration; but luckily, CalDAV is a pretty stable format and hopefully won't be hurt much by this:
+Then install the plugin:
+
+```
+doas pip install radicale-bsdauth
+```
+
+In order to function, you also need to grant `radicale` access to authenticate(3):
+
+```
+usermod -G auth _radicale
+```
+
+And then tell radicale to use it by editing [`/etc/radicale/config` or `/var/lib/radicale/.config/radicale/config`](https://radicale.org/v3.html#configuration) to add
+
+```
+[auth]
+type = radicale_bsdauth
+```
+
+### Install Radicale 3 on OpenBSD
+
+**If you are currently using version 2, you should backup your calendars before proceeding** because upgrading risks breaking something. It's unlikely, but possible.
+
+```
+doas -u _radicale tar -jcvf - /var/lib/radicale/collections | (umask 027; cat > radicale-collections.tgz) # for example
+```
+
+Then install radicale 3:
 
 ```
 doas pkg_add python3
 doas pip install --upgrade pip
 doas pip install "radicale>=3"
 
-# ( these rest of these steps would normally be handled by pkg_add )
+# Set up radicale's environment
+# ( these rest of these steps would normally be handled by pkg_add(1) )
 doas useradd -d /var/lib/radicale -m -L daemon -r 1..999 _radicale # if you don't already have this user
 cat <<EOF | doas tee /etc/rc.d/radicale && doas chmod +x /etc/rc.d/radicale
 #!/bin/ksh
@@ -40,26 +67,8 @@ pexp="/usr/local/bin/python3.8 /usr/local/bin/radicale"
 
 rc_cmd \$1
 EOF
-```
-
-
-Then install the plugin:
-
-```
-doas pip install radicale-bsdauth
-```
-
-In order to function, you also need to grant `radicale` access to authenticate(3):
-
-```
-usermod -G auth _radicale
-```
-
-And then tell radicale to use it by editing [`/etc/radicale/config` or `/var/lib/radicale/.config/radicale/config`](https://radicale.org/v3.html#configuration) to add
-
-```
-[auth]
-type = radicale_bsdauth
+doas rcctl enable radicale
+doas rcctl start radicale
 ```
 
 
