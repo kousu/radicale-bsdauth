@@ -9,9 +9,9 @@ authors = [ {name = "kousu", email = "kousu@kousu.ca"} ]
 description = "Login to Radicale with your native OpenBSD accounts."
 readme = "README.md"
 
-requires-python = ">=3.8"
+requires-python = ">=3.12"
 dependencies = [
-  "Radicale~=3.0",
+  "Radicale~=3.5",
   ]
 
 keywords = ["authentication", "radicale", "caldav", "carddav", "PIM", "plugin"]
