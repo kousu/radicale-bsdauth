@@ -77,7 +77,7 @@ def auth_userokay(name, password, type=None, style=None):
 
 
 class Auth(auth.BaseAuth):
-    def login(self, login, password):
+    def _login(self, login: str, password: str) -> str:
         if auth_userokay(login, password):
             # the user might have passed 'username:style' to
             # pick a particular backend 'style'; see auth_userokay(3).
