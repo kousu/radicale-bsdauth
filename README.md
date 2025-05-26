@@ -58,10 +58,10 @@ rc_bg=YES
 
 . /etc/rc.d/rc.subr
 
-pexp="/usr/local/bin/python3.12 ${daemon}${daemon_flags:+ ${daemon_flags}}"
+pexp="/usr/local/bin/python3.12 \${daemon}\${daemon_flags:+\${daemon_flags}}"
 rc_reload=NO
 
-rc_cmd $1
+rc_cmd \$1
 EOF
 doas rcctl enable radicale
 doas rcctl start radicale
