@@ -32,7 +32,7 @@ type = radicale_bsdauth
 
 ### Install Radicale 3 on OpenBSD
 
-(these are for OpenBSD 7.7; will need adjusting)
+(these have been tested for OpenBSD 7.7, but will need adjusting for a different version)
 
 **If you are currently using version 2, you should backup your calendars before proceeding** because upgrading risks breaking something. It's unlikely, but possible.
 
