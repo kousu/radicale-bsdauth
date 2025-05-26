@@ -32,6 +32,8 @@ type = radicale_bsdauth
 
 ### Install Radicale 3 on OpenBSD
 
+(these are for OpenBSD 7.7; will need adjusting)
+
 **If you are currently using version 2, you should backup your calendars before proceeding** because upgrading risks breaking something. It's unlikely, but possible.
 
 ```
@@ -42,8 +44,7 @@ Then install radicale 3:
 
 ```
 doas pkg_add python3
-doas pip install --upgrade pip
-doas pip install "radicale>=3"
+doas pip install --break-system-packages "radicale>=3"  # it's either --break-system-packages or making a venv and pointed /etc/rc.d/radicale at your venv
 
 # Set up radicale's environment
 # ( these rest of these steps would normally be handled by pkg_add(1) )
@@ -53,19 +54,14 @@ cat <<EOF | doas tee /etc/rc.d/radicale && doas chmod +x /etc/rc.d/radicale
 
 daemon="/usr/local/bin/radicale"
 daemon_user="_radicale"
-daemon_logger="daemon.info"
+rc_bg=YES
 
 . /etc/rc.d/rc.subr
 
-rc_start() {
-        \${rcexec} "\${daemon_logger:+set -o pipefail; }\${daemon} \${daemon_flags}\${daemon_logger:+ 2>&1 |
-                logger -ip \${daemon_logger} -t \${_name}} \&"
-}
+pexp="/usr/local/bin/python3.12 ${daemon}${daemon_flags:+ ${daemon_flags}}"
+rc_reload=NO
 
-# Beware: you need to update this for to the python you actually have installed
-pexp="/usr/local/bin/python3.8 /usr/local/bin/radicale"
-
-rc_cmd \$1
+rc_cmd $1
 EOF
 doas rcctl enable radicale
 doas rcctl start radicale
