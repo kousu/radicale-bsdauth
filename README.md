@@ -9,7 +9,7 @@ same password you use for ssh and, perhaps, email, chat, etc.
 ## Installation
 
 This has only been tested against `radicale>=3`, which is not yet packaged
-for OpenBSD, so you must [install that version manually](#install-radicale-3-on-openbsd) (below) if it's not already.
+for OpenBSD, so you **must [install that version manually](#install-radicale-3-on-openbsd)** (below) if it's not already.
 
 Then install the plugin:
 
@@ -30,6 +30,12 @@ And then tell radicale to use it by editing [`/etc/radicale/config` or `/var/lib
 type = radicale_bsdauth
 ```
 
+And restart:
+
+```
+doas rcctl restart radicale
+```
+
 ### Install Radicale 3 on OpenBSD
 
 **If you are currently using version 2, you should backup your calendars before proceeding** because upgrading risks breaking something. It's unlikely, but possible.
@@ -41,34 +47,51 @@ doas -u _radicale tar -jcvf - /var/lib/radicale/collections | (umask 027; cat > 
 Then install radicale 3:
 
 ```
-doas pkg_add python3
-doas pip install --upgrade pip
+doas pkg_add python3 py3-pip
 doas pip install "radicale>=3"
 
 # Set up radicale's environment
 # ( these rest of these steps would normally be handled by pkg_add(1) )
 doas useradd -d /var/lib/radicale -m -L daemon -r 1..999 _radicale # if you don't already have this user
-cat <<EOF | doas tee /etc/rc.d/radicale && doas chmod +x /etc/rc.d/radicale
-#!/bin/ksh
+```
 
+You need to put this in `/etc/rc.d/radicale`:
+
+```
 daemon="/usr/local/bin/radicale"
 daemon_user="_radicale"
 daemon_logger="daemon.info"
 
 . /etc/rc.d/rc.subr
 
+pexp="/usr/local/bin/python3.12 ${daemon}${daemon_flags:+ ${daemon_flags}}"
+rc_reload=NO
+
 rc_start() {
-        \${rcexec} "\${daemon_logger:+set -o pipefail; }\${daemon} \${daemon_flags}\${daemon_logger:+ 2>&1 |
-                logger -ip \${daemon_logger} -t \${_name}} \&"
+  # radicale doesn't self-daemonize so add &
+  rc_exec "${daemon} ${daemon_flags}" &
 }
 
-# Beware: you need to update this for to the python you actually have installed
-pexp="/usr/local/bin/python3.8 /usr/local/bin/radicale"
+rc_cmd $1
+```
 
-rc_cmd \$1
-EOF
+and
+
+```
+doas chmod +x /etc/rc.d/radicale
+```
+
+Finally turn it on:
+
+```
 doas rcctl enable radicale
 doas rcctl start radicale
+```
+
+You can monitor it with:
+
+```
+tail -f /var/log/daemon | grep radicale
 ```
 
 
