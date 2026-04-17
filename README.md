@@ -1,3 +1,6 @@
+> [!WARNING]
+> Migrated to https://codeberg.org/kousu/radicale-bsdauth
+
 # OpenBSD Authentication plugin for Radicale
 
 This connects a [radicale](https://radicale.org/) install to the local
